@@ -1,1 +1,1 @@
-This is my app which will contain scary stories with different ctegories, and each category will have multiple stories. It has multiple screens and also has a user profile.
+ChillInk is an interactive mobile app designed to immerse users in a collection of chilling, scary stories. The app categorizes stories into various genres, each offering multiple tales to explore. Users can navigate through a range of creepy narratives, all while enjoying an intuitive user experience across multiple screens.
