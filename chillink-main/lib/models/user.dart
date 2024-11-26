@@ -9,7 +9,6 @@ class User {
     required this.profileImage,
   });
 
-  // Method to convert User data to a map (useful for storing in SharedPreferences or databases)
   Map<String, String> toMap() {
     return {
       'username': username,
@@ -18,7 +17,6 @@ class User {
     };
   }
 
-  // Method to create a User object from a map
   factory User.fromMap(Map<String, String> map) {
     return User(
       username: map['username'] ?? '',

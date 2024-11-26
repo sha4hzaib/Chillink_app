@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'story_screen.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 class FolkloreScreen extends StatefulWidget {
+  const FolkloreScreen({super.key});
+
   @override
   _FolkloreScreenState createState() => _FolkloreScreenState();
 }
@@ -12,7 +15,8 @@ class _FolkloreScreenState extends State<FolkloreScreen> {
       'title': 'The Headless Horseman',
       'description': 'A chilling tale of a spectral rider without a head.',
       'image': 'assets/images/headless_horseman.jpg',
-      'content': '''In a small town nestled between dark woods and misty hills, there was a legend that sent shivers down the spines of all who heard it. The tale of the Headless Horseman had been passed down through generations, each retelling more chilling than the last. According to the townsfolk, on moonless nights, a spectral rider could be seen galloping through the woods, searching for his missing head.
+      'content':
+          '''In a small town nestled between dark woods and misty hills, there was a legend that sent shivers down the spines of all who heard it. The tale of the Headless Horseman had been passed down through generations, each retelling more chilling than the last. According to the townsfolk, on moonless nights, a spectral rider could be seen galloping through the woods, searching for his missing head.
 
 The story began many years ago when a soldier, known only as Ichabod, rode into town. He was a valiant warrior, but he had made a powerful enemy during the war—a rival who sought revenge. One fateful night, as Ichabod rode home from battle, he was ambushed by his foe. In the struggle, Ichabod lost his head, and his body was never found. Legend has it that his restless spirit now roams the woods, seeking vengeance and the head he lost.
 
@@ -35,7 +39,8 @@ And so the legend lives on, a chilling reminder of the soldier who roams the nig
       'title': 'The Chupacabra',
       'description': 'A tale of a legendary creature.',
       'image': 'assets/images/chupacabra.jpg',
-      'content': '''In the heart of Puerto Rico, whispers of a terrifying creature have haunted the countryside for decades. Known as the Chupacabra, this legendary being is said to prey on livestock, leaving a trail of dead goats and puzzled farmers in its wake. The creature is often described as a small, hairless dog with razor-sharp fangs and glowing red eyes, haunting the shadows of night.
+      'content':
+          '''In the heart of Puerto Rico, whispers of a terrifying creature have haunted the countryside for decades. Known as the Chupacabra, this legendary being is said to prey on livestock, leaving a trail of dead goats and puzzled farmers in its wake. The creature is often described as a small, hairless dog with razor-sharp fangs and glowing red eyes, haunting the shadows of night.
 
 The legend began in the mid-1990s when reports of livestock killings surged across the island. Farmers found their goats drained of blood, their lifeless bodies left behind without a single drop spilled on the ground. Panic spread like wildfire as more sightings were reported—each more bizarre than the last. Witnesses described the creature darting through the underbrush, its eyes reflecting the moonlight, sending chills down their spines.
 
@@ -59,66 +64,69 @@ Today, the Chupacabra remains a symbol of mystery and dread. Although scientists
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Folklore Stories')),
+      appBar: AppBar(title: const Text('Folklore Stories')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: stories.map((story) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+          child: SimpleGestureDetector(
+            onHorizontalSwipe: (direction) {
+              if (direction == SwipeDirection.right) {
+                Navigator.pop(context);
+              }
+            },
+            child: ListView.builder(
+              itemCount: stories.length,
+              itemBuilder: (context, index) {
+                final story = stories[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Card(
                     color: Colors.black38,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                    shape: const StadiumBorder(),
+                    elevation: 8,
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoryScreen(
+                              title: story['title']!,
+                              imagePath: story['image']!,
+                              content: story['content']!,
+                            ),
+                          ),
+                        );
+                      },
+                      leading: Image.asset(
+                        story['image']!,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StoryScreen(
-                            title: story['title']!,
-                            imagePath: story['image']!,
-                            content: story['content']!,
-                          ),
+                      title: Text(
+                        story['title']!,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          story['title']!,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
                           story['description']!,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: Colors.grey[400],
                           ),
                         ),
-                      ],
+                      ),
+                      contentPadding: const EdgeInsets.all(16.0),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              },
+            ),
           ),
         ),
       ),

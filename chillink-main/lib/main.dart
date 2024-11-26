@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 
-void main() {
-  runApp(ChillInkApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyDUUw_FzdlkAwH0Yt4DoKWH5PUEKf6WoWs",
+        authDomain: "chillink-app.firebaseapp.com",
+        projectId: "chillink-app",
+        storageBucket: "chillink-app.firebasestorage.app",
+        messagingSenderId: "273001971903",
+        appId: "1:273001971903:web:dd01dca2f45378f546860a",
+      ),
+    );
+  } else {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyDUUw_FzdlkAwH0Yt4DoKWH5PUEKf6WoWs",
+        authDomain: "chillink-app.firebaseapp.com",
+        projectId: "chillink-app",
+        storageBucket: "chillink-app.firebasestorage.app",
+        messagingSenderId: "273001971903",
+        appId: "1:273001971903:web:dd01dca2f45378f546860a",
+      ),
+    );
+  }
+
+  runApp(const ChillInkApp());
 }
 
 class ChillInkApp extends StatelessWidget {
+  const ChillInkApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +44,7 @@ class ChillInkApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Colors.black,
       ),
-      home: HomeScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
